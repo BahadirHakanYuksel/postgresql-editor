@@ -6,18 +6,31 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "vercel --prod",
+    "deploy-preview": "vercel"
   },
   "dependencies": {
+    "@codemirror/lang-sql": "^6.9.0",
+    "@codemirror/state": "^6.5.2",
+    "@codemirror/view": "^6.37.2",
+    "@lezer/highlight": "^1.2.1",
+    "@uiw/codemirror-theme-github": "^4.23.13",
+    "@uiw/codemirror-theme-vscode": "^4.23.13",
+    "@uiw/codemirror-themes": "^4.23.13",
+    "@uiw/react-codemirror": "^4.23.13",
+    "critters": "^0.0.23",
+    "lucide-react": "^0.515.0",
+    "next": "15.3.3",
+    "pg": "^8.16.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.3.3"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
-    "@eslint/eslintrc": "^3"
+    "tailwindcss": "^4"
   }
 }

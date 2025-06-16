@@ -229,12 +229,11 @@ export default function Home() {
 
               {/* Query Results */}
               {queryResult && (
-                <div className="mt-8">                  <QueryResults
+                <div className="mt-8">
+                  <QueryResults
                     result={queryResult}
                     showSchemas={showSchemas}
                     showRelations={showRelations}
-                    onToggleSchemas={setShowSchemas}
-                    onToggleRelations={setShowRelations}
                   />
                 </div>
               )}
@@ -450,15 +449,9 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </div>        ) : (
-          <TableManager 
-            tables={tables} 
-            onTablesChange={fetchTables}
-            onQueryChange={(query) => {
-              setCurrentQuery(query);
-              setActiveTab("query");
-            }}
-          />
+          </div>
+        ) : (
+          <TableManager tables={tables} onTablesChange={fetchTables} />
         )}
       </main>
     </div>
