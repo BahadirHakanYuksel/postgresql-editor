@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import SqlEditor from "@/components/SqlEditor";
 import TableManager from "@/components/TableManager";
 import QueryResults from "@/components/QueryResults";
+import QuestionBank from "@/components/QuestionBank";
 import {
   Database,
   Table,
@@ -15,6 +16,8 @@ import {
   ArrowLeftRight,
   Sparkles,
   Star,
+  HelpCircle,
+  BookOpen,
 } from "lucide-react";
 
 export default function Home() {
@@ -126,6 +129,7 @@ export default function Home() {
       <div className="bg-gray-800/70 backdrop-blur-lg border-b border-gray-700/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex space-x-1" aria-label="Tabs">
+            {" "}
             <button
               onClick={() => setActiveTab("query")}
               className={`relative py-4 px-6 font-semibold text-sm transition-all duration-300 rounded-t-lg ${
@@ -138,6 +142,20 @@ export default function Home() {
               SQL Query Studio
               {activeTab === "query" && (
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500"></div>
+              )}
+            </button>
+            <button
+              onClick={() => setActiveTab("questions")}
+              className={`relative py-4 px-6 font-semibold text-sm transition-all duration-300 rounded-t-lg ${
+                activeTab === "questions"
+                  ? "text-purple-400 bg-gradient-to-b from-purple-900/30 to-transparent border-b-2 border-purple-500"
+                  : "text-gray-400 hover:text-gray-200 hover:bg-gray-700/30"
+              }`}
+            >
+              <HelpCircle className="inline h-4 w-4 mr-2" />
+              Soru Bankası
+              {activeTab === "questions" && (
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-500"></div>
               )}
             </button>
             <button
@@ -221,15 +239,21 @@ export default function Home() {
                       </button>
                     </div>
                   </div>
-                </div>
+                </div>{" "}
                 <div className="p-8">
-                  <SqlEditor value={currentQuery} onChange={setCurrentQuery} />
+                  <SqlEditor
+                    value={currentQuery}
+                    onChange={setCurrentQuery}
+                    tables={tables}
+                  />
                 </div>
               </div>
 
               {/* Query Results */}
               {queryResult && (
-                <div className="mt-8">                  <QueryResults
+                <div className="mt-8">
+                  {" "}
+                  <QueryResults
                     result={queryResult}
                     showSchemas={showSchemas}
                     showRelations={showRelations}
@@ -447,12 +471,21 @@ export default function Home() {
                       </button>
                     ))}
                   </div>
-                </div>
+                </div>{" "}
               </div>
             </div>
-          </div>        ) : (
-          <TableManager 
-            tables={tables} 
+          </div>
+        ) : activeTab === "questions" ? (
+          <QuestionBank
+            onQuerySelect={(query) => {
+              setCurrentQuery(query);
+              setActiveTab("query");
+            }}
+            tables={tables}
+          />
+        ) : (
+          <TableManager
+            tables={tables}
             onTablesChange={fetchTables}
             onQueryChange={(query) => {
               setCurrentQuery(query);

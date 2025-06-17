@@ -62,12 +62,12 @@ const analyzeGlobalRelations = (schemas) => {
   return allRelations;
 };
 
-const QueryResults = ({ 
-  result, 
-  showSchemas = false, 
+const QueryResults = ({
+  result,
+  showSchemas = false,
   showRelations = false,
   onToggleSchemas,
-  onToggleRelations 
+  onToggleRelations,
 }) => {
   const [schemas, setSchemas] = useState(null);
   const [localShowSchemas, setLocalShowSchemas] = useState(false);
@@ -140,7 +140,7 @@ const QueryResults = ({
         {/* Premium Background Effect */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 via-cyan-400/10 to-blue-400/10 rounded-3xl"></div>
         <div className="absolute top-4 right-4 w-20 h-20 bg-gradient-to-br from-blue-400 to-cyan-600 rounded-full blur-2xl opacity-20"></div>
-        
+
         <div className="relative flex items-center justify-center">
           <div className="flex flex-col items-center gap-4 text-center">
             <div className="relative">
@@ -151,7 +151,9 @@ const QueryResults = ({
               <h3 className="text-2xl font-bold bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent">
                 Ready to Execute
               </h3>
-              <p className="text-blue-200 text-lg">Your powerful SQL query awaits...</p>
+              <p className="text-blue-200 text-lg">
+                Your powerful SQL query awaits...
+              </p>
               <div className="flex items-center gap-2 text-sm text-blue-300">
                 <Sparkles className="h-4 w-4 text-cyan-400" />
                 <span>Premium SQL Environment</span>
@@ -174,7 +176,7 @@ const QueryResults = ({
       {localShowSchemas && schemas && (
         <div className="glass-dark rounded-3xl shadow-2xl border border-blue-500/30 overflow-hidden relative animate-slide-in">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 via-cyan-400/10 to-blue-400/10"></div>
-          
+
           <div className="relative px-8 py-6 border-b border-blue-500/30 bg-gradient-to-r from-blue-800/50 to-cyan-800/50">
             <div className="flex items-center gap-4">
               <div className="relative">
@@ -200,14 +202,16 @@ const QueryResults = ({
                   className="card-premium glass-dark rounded-2xl border border-blue-500/20 p-6 hover:shadow-2xl transition-all duration-500 relative overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5"></div>
-                  
+
                   <div className="relative flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <div className="relative">
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-600 rounded-lg blur-sm opacity-50"></div>
                         <Table className="relative h-6 w-6 text-blue-400" />
                       </div>
-                      <h4 className="text-xl font-bold text-white">{tableName}</h4>
+                      <h4 className="text-xl font-bold text-white">
+                        {tableName}
+                      </h4>
                     </div>
                     <div className="flex gap-2">
                       <span className="px-3 py-1 bg-gradient-to-r from-blue-500/20 to-blue-600/20 text-blue-200 text-sm rounded-full font-medium border border-blue-500/30">
@@ -231,7 +235,9 @@ const QueryResults = ({
                           ) : (
                             <FileText className="h-4 w-4 text-blue-300" />
                           )}
-                          <span className="font-medium text-white">{column}</span>
+                          <span className="font-medium text-white">
+                            {column}
+                          </span>
                         </div>
                         <div className="flex gap-2">
                           {column === "id" && (
@@ -266,7 +272,7 @@ const QueryResults = ({
       {localShowRelations && globalRelations.length > 0 && (
         <div className="glass-dark rounded-3xl shadow-2xl border border-cyan-500/30 overflow-hidden relative animate-slide-in">
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-blue-400/10 to-cyan-400/10"></div>
-          
+
           <div className="relative px-8 py-6 border-b border-cyan-500/30 bg-gradient-to-r from-cyan-800/50 to-blue-800/50">
             <div className="flex items-center gap-4">
               <div className="relative">
@@ -292,7 +298,7 @@ const QueryResults = ({
                   className="glass-dark rounded-2xl border border-cyan-500/20 p-6 hover:shadow-xl transition-all duration-300 relative overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-500/5"></div>
-                  
+
                   <div className="relative flex items-center justify-between">
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-2 px-3 py-2 bg-cyan-500/20 rounded-lg border border-cyan-500/30">
@@ -325,8 +331,10 @@ const QueryResults = ({
       {/* Main Query Result */}
       <div className="glass-dark rounded-3xl shadow-2xl border border-blue-500/30 overflow-hidden relative">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-cyan-400/10"></div>
-        
-        <div className="relative px-8 py-6 border-b border-blue-500/30">          <div className="flex items-center justify-between">
+
+        <div className="relative px-8 py-6 border-b border-blue-500/30">
+          {" "}
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               {result.success ? (
                 <div className="relative">
@@ -341,7 +349,9 @@ const QueryResults = ({
               )}
               <div>
                 <h3 className="text-2xl font-bold bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent">
-                  {result.success ? "Query Executed Successfully" : "Query Error"}
+                  {result.success
+                    ? "Query Executed Successfully"
+                    : "Query Error"}
                 </h3>
                 {result.success && result.rowCount !== undefined && (
                   <p className="text-emerald-300 font-medium">
@@ -399,7 +409,9 @@ const QueryResults = ({
                 <div className="mb-6 p-4 glass-dark rounded-2xl border border-emerald-500/30">
                   <div className="flex items-center gap-3">
                     <Info className="h-5 w-5 text-emerald-400" />
-                    <span className="text-emerald-200 font-medium">{result.message}</span>
+                    <span className="text-emerald-200 font-medium">
+                      {result.message}
+                    </span>
                   </div>
                 </div>
               )}
@@ -443,40 +455,43 @@ const QueryResults = ({
                             key={index}
                             className="card-premium hover:bg-gradient-to-r hover:from-blue-500/10 hover:to-cyan-500/10 transition-all duration-300"
                           >
-                            {Object.entries(row).map(([column, value], cellIndex) => (
-                              <td
-                                key={cellIndex}
-                                className="px-6 py-4 whitespace-nowrap text-sm"
-                              >
-                                {value === null ? (
-                                  <span className="px-2 py-1 bg-slate-600/50 text-slate-300 rounded-lg text-xs italic">
-                                    NULL
-                                  </span>
-                                ) : typeof value === "boolean" ? (
-                                  <span
-                                    className={`px-3 py-1 rounded-full text-xs font-bold shadow-sm ${
-                                      value
-                                        ? "bg-gradient-to-r from-emerald-500/20 to-emerald-600/20 text-emerald-200 border border-emerald-500/30"
-                                        : "bg-gradient-to-r from-red-500/20 to-red-600/20 text-red-200 border border-red-500/30"
-                                    }`}
-                                  >
-                                    {value.toString()}
-                                  </span>
-                                ) : typeof value === "number" ? (
-                                  <span className="font-mono text-blue-200 font-semibold bg-blue-500/20 px-2 py-1 rounded border border-blue-500/30">
-                                    {value}
-                                  </span>
-                                ) : typeof value === "string" && value.includes("@") ? (
-                                  <span className="text-purple-200 font-medium bg-purple-500/20 px-2 py-1 rounded border border-purple-500/30">
-                                    {value}
-                                  </span>
-                                ) : (
-                                  <span className="text-white font-medium">
-                                    {value?.toString() || "-"}
-                                  </span>
-                                )}
-                              </td>
-                            ))}
+                            {Object.entries(row).map(
+                              ([column, value], cellIndex) => (
+                                <td
+                                  key={cellIndex}
+                                  className="px-6 py-4 whitespace-nowrap text-sm"
+                                >
+                                  {value === null ? (
+                                    <span className="px-2 py-1 bg-slate-600/50 text-slate-300 rounded-lg text-xs italic">
+                                      NULL
+                                    </span>
+                                  ) : typeof value === "boolean" ? (
+                                    <span
+                                      className={`px-3 py-1 rounded-full text-xs font-bold shadow-sm ${
+                                        value
+                                          ? "bg-gradient-to-r from-emerald-500/20 to-emerald-600/20 text-emerald-200 border border-emerald-500/30"
+                                          : "bg-gradient-to-r from-red-500/20 to-red-600/20 text-red-200 border border-red-500/30"
+                                      }`}
+                                    >
+                                      {value.toString()}
+                                    </span>
+                                  ) : typeof value === "number" ? (
+                                    <span className="font-mono text-blue-200 font-semibold bg-blue-500/20 px-2 py-1 rounded border border-blue-500/30">
+                                      {value}
+                                    </span>
+                                  ) : typeof value === "string" &&
+                                    value.includes("@") ? (
+                                    <span className="text-purple-200 font-medium bg-purple-500/20 px-2 py-1 rounded border border-purple-500/30">
+                                      {value}
+                                    </span>
+                                  ) : (
+                                    <span className="text-white font-medium">
+                                      {value?.toString() || "-"}
+                                    </span>
+                                  )}
+                                </td>
+                              )
+                            )}
                           </tr>
                         ))}
                       </tbody>
@@ -492,7 +507,9 @@ const QueryResults = ({
                   <h4 className="text-xl font-semibold text-white mb-2">
                     Query Executed Successfully
                   </h4>
-                  <p className="text-blue-200">No results found for this query.</p>
+                  <p className="text-blue-200">
+                    No results found for this query.
+                  </p>
                 </div>
               )}
 
@@ -502,7 +519,9 @@ const QueryResults = ({
                   <div className="flex items-center gap-2 text-emerald-300">
                     <Clock className="h-5 w-5" />
                     <span className="font-semibold">Execution Time:</span>
-                    <span className="font-mono font-bold">{result.executionTime}ms</span>
+                    <span className="font-mono font-bold">
+                      {result.executionTime}ms
+                    </span>
                   </div>
                   <div className="flex items-center gap-2 text-cyan-300">
                     <Zap className="h-5 w-5" />
@@ -516,7 +535,9 @@ const QueryResults = ({
               <div className="flex items-start gap-4">
                 <XCircle className="h-6 w-6 text-red-400 mt-1 flex-shrink-0" />
                 <div>
-                  <h4 className="text-red-300 font-bold mb-2 text-lg">Error Details</h4>
+                  <h4 className="text-red-300 font-bold mb-2 text-lg">
+                    Error Details
+                  </h4>
                   <p className="text-red-200 leading-relaxed">{result.error}</p>
                 </div>
               </div>

@@ -209,7 +209,6 @@ const TableManager = ({ tables, onTablesChange, onQueryChange }) => {
                     placeholder="Enter table name..."
                   />
                 </div>
-
                 {/* Columns Section */}
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
@@ -344,26 +343,35 @@ const TableManager = ({ tables, onTablesChange, onQueryChange }) => {
                       </div>
                     ))}
                   </div>
-                </div>                {/* Create Button */}
+                </div>{" "}
+                {/* Create Button */}
                 <div className="flex flex-col gap-3">
                   {/* Validation Messages */}
-                  {(!newTableName.trim() || newTableColumns.some(col => !col.name.trim() && col.name !== 'id')) && (
+                  {(!newTableName.trim() ||
+                    newTableColumns.some(
+                      (col) => !col.name.trim() && col.name !== "id"
+                    )) && (
                     <div className="bg-yellow-600/20 border border-yellow-500/30 rounded-xl p-3">
                       <div className="flex items-center gap-2 text-yellow-400">
                         <Info className="h-4 w-4" />
                         <span className="text-sm">
-                          {!newTableName.trim() 
-                            ? "Please enter a table name" 
+                          {!newTableName.trim()
+                            ? "Please enter a table name"
                             : "Please fill in all column names"}
                         </span>
                       </div>
                     </div>
                   )}
-                  
+
                   <div className="flex justify-end">
                     <button
                       onClick={createTable}
-                      disabled={!newTableName.trim() || newTableColumns.some(col => !col.name.trim() && col.name !== 'id')}
+                      disabled={
+                        !newTableName.trim() ||
+                        newTableColumns.some(
+                          (col) => !col.name.trim() && col.name !== "id"
+                        )
+                      }
                       className="px-8 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-medium"
                     >
                       Create Table
@@ -424,15 +432,23 @@ const TableManager = ({ tables, onTablesChange, onQueryChange }) => {
                       </div>
                     </div>
 
-                    <div className="space-y-3">                      <button
-                        onClick={() => onQueryChange && onQueryChange(`SELECT * FROM ${table} LIMIT 100;`)}
+                    <div className="space-y-3">
+                      {" "}
+                      <button
+                        onClick={() =>
+                          onQueryChange &&
+                          onQueryChange(`SELECT * FROM ${table} LIMIT 100;`)
+                        }
                         className="w-full px-4 py-2 bg-blue-600/20 text-blue-400 rounded-lg hover:bg-blue-600/30 transition-all duration-300 border border-blue-500/30 flex items-center gap-2"
                       >
                         <Eye className="h-4 w-4" />
                         View Data
-                      </button><div className="grid grid-cols-2 gap-2">
+                      </button>
+                      <div className="grid grid-cols-2 gap-2">
                         <button
-                          onClick={() => onQueryChange && onQueryChange(`DESCRIBE ${table}`)}
+                          onClick={() =>
+                            onQueryChange && onQueryChange(`DESCRIBE ${table}`)
+                          }
                           className="px-3 py-2 bg-emerald-600/20 text-emerald-400 rounded-lg hover:bg-emerald-600/30 transition-all duration-300 border border-emerald-500/30 text-sm flex items-center gap-1"
                         >
                           <Settings className="h-3 w-3" />
@@ -440,7 +456,8 @@ const TableManager = ({ tables, onTablesChange, onQueryChange }) => {
                         </button>
                         <button
                           onClick={() =>
-                            onQueryChange && onQueryChange(`SELECT COUNT(*) FROM ${table}`)
+                            onQueryChange &&
+                            onQueryChange(`SELECT COUNT(*) FROM ${table}`)
                           }
                           className="px-3 py-2 bg-yellow-600/20 text-yellow-400 rounded-lg hover:bg-yellow-600/30 transition-all duration-300 border border-yellow-500/30 text-sm flex items-center gap-1"
                         >

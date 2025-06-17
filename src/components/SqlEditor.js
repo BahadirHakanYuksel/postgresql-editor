@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { sql } from "@codemirror/lang-sql";
 import { oneDark } from "@codemirror/theme-one-dark";
@@ -8,7 +8,103 @@ import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { githubLight } from "@uiw/codemirror-theme-github";
 import { createTheme } from "@uiw/codemirror-themes";
 import { tags as t } from "@lezer/highlight";
-import { Moon, Sun, Palette, Code2 } from "lucide-react";
+import { autocompletion, completionKeymap } from "@codemirror/autocomplete";
+import { keymap } from "@codemirror/view";
+import { Moon, Sun, Palette, Code2, Database } from "lucide-react";
+
+// PostgreSQL anahtar kelimeleri ve fonksiyonları
+const postgresKeywords = [
+  "SELECT",
+  "FROM",
+  "WHERE",
+  "JOIN",
+  "INNER",
+  "LEFT",
+  "RIGHT",
+  "FULL",
+  "OUTER",
+  "ON",
+  "GROUP",
+  "BY",
+  "HAVING",
+  "ORDER",
+  "ASC",
+  "DESC",
+  "LIMIT",
+  "OFFSET",
+  "INSERT",
+  "INTO",
+  "VALUES",
+  "UPDATE",
+  "SET",
+  "DELETE",
+  "CREATE",
+  "TABLE",
+  "ALTER",
+  "DROP",
+  "INDEX",
+  "VIEW",
+  "TRIGGER",
+  "FUNCTION",
+  "PROCEDURE",
+  "PRIMARY",
+  "KEY",
+  "FOREIGN",
+  "REFERENCES",
+  "UNIQUE",
+  "NOT",
+  "NULL",
+  "DEFAULT",
+  "CHECK",
+  "CONSTRAINT",
+  "SERIAL",
+  "INTEGER",
+  "VARCHAR",
+  "TEXT",
+  "DATE",
+  "TIMESTAMP",
+  "BOOLEAN",
+  "DECIMAL",
+  "REAL",
+  "JSON",
+  "JSONB",
+  "COUNT",
+  "SUM",
+  "AVG",
+  "MIN",
+  "MAX",
+  "DISTINCT",
+  "AS",
+  "LIKE",
+  "ILIKE",
+  "IN",
+  "EXISTS",
+  "BETWEEN",
+  "IS",
+  "AND",
+  "OR",
+  "CASE",
+  "WHEN",
+  "THEN",
+  "ELSE",
+  "END",
+  "WITH",
+  "RECURSIVE",
+  "UNION",
+  "INTERSECT",
+  "EXCEPT",
+  "WINDOW",
+  "OVER",
+  "PARTITION",
+  "ROW_NUMBER",
+  "RANK",
+  "DENSE_RANK",
+  "LEAD",
+  "LAG",
+  "FIRST_VALUE",
+  "LAST_VALUE",
+  "NTILE",
+];
 
 // Özel PostgreSQL teması
 const postgreSQLTheme = createTheme({
@@ -66,9 +162,105 @@ const postgreSQLDarkTheme = createTheme({
   ],
 });
 
-const SqlEditor = ({ value, onChange }) => {
+const SqlEditor = ({ value, onChange, tables = [] }) => {
   const [isDark, setIsDark] = useState(false);
   const [currentTheme, setCurrentTheme] = useState("postgresql");
+
+  // Dinamik otomatik tamamlama oluştur
+  const createAutocompletion = () => {
+    const tableNames = tables.map((table) => ({
+      label: table,
+      type: "table",
+      info: `Tablo: ${table}`,
+    }));
+
+    const columnSuggestions = tables.flatMap((table) => [
+      {
+        label: `${table}.id`,
+        type: "column",
+        info: `${table} tablosunun ID kolonu`,
+      },
+      {
+        label: `${table}.*`,
+        type: "column",
+        info: `${table} tablosunun tüm kolonları`,
+      },
+    ]);
+
+    const keywords = postgresKeywords.map((keyword) => ({
+      label: keyword,
+      type: "keyword",
+      info: `PostgreSQL anahtar kelimesi`,
+    }));
+
+    const commonQueries = [
+      {
+        label: "SELECT * FROM ",
+        type: "snippet",
+        info: "Temel SELECT sorgusu",
+      },
+      {
+        label: "SELECT COUNT(*) FROM ",
+        type: "snippet",
+        info: "Kayıt sayısını getir",
+      },
+      {
+        label: "INSERT INTO ${table} (${columns}) VALUES (${values})",
+        type: "snippet",
+        info: "Yeni kayıt ekle",
+      },
+      {
+        label: "UPDATE ${table} SET ${column} = ${value} WHERE ${condition}",
+        type: "snippet",
+        info: "Kayıt güncelle",
+      },
+      {
+        label: "DELETE FROM ${table} WHERE ${condition}",
+        type: "snippet",
+        info: "Kayıt sil",
+      },
+    ];
+
+    return autocompletion({
+      override: [
+        (context) => {
+          const word = context.matchBefore(/\w*/);
+          if (!word) return null;
+
+          const options = [
+            ...keywords,
+            ...tableNames,
+            ...columnSuggestions,
+            ...commonQueries,
+          ];
+
+          return {
+            from: word.from,
+            options: options.filter((option) =>
+              option.label.toLowerCase().includes(word.text.toLowerCase())
+            ),
+          };
+        },
+      ],
+    });
+  };
+
+  const extensions = [
+    sql(),
+    createAutocompletion(),
+    keymap.of([
+      ...completionKeymap,
+      {
+        key: "Ctrl-Space",
+        run: (view) => {
+          view.dispatch({
+            effects: [autocompletion().activate],
+          });
+          return true;
+        },
+      },
+    ]),
+  ];
 
   const themes = {
     postgresql: postgreSQLTheme,
@@ -141,10 +333,11 @@ const SqlEditor = ({ value, onChange }) => {
       <div className="relative group">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 rounded-xl blur-sm opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
         <div className="relative bg-white rounded-xl border-2 border-gray-200 overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+          {" "}
           <CodeMirror
             value={value}
             height="300px"
-            extensions={[sql()]}
+            extensions={extensions}
             onChange={(val) => onChange(val)}
             theme={getTheme()}
             basicSetup={{
